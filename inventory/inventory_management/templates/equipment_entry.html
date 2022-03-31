@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+<style>
+   
+
+    #equipment_id {
+         width: 18%;
+        
+    }
+
+
+    body {background-color: rgb(252, 248, 248);}
+    label {text-align: right;
+            display: inline-block;
+        }
+    input {text-align: left;
+            display: inline-block;
+            
+          }
+    
+</style> 
+
+<body>
+    
+
+    <form>
+            
+        <div  class="container mt-2">
+            <label for="Equipment ID">Equipment ID</label><br>
+    
+                <input 
+                type="text"
+                name="equipment_id"
+                id="equipment_id"
+                placeholder="equipment_id"
+                size="15"
+                >
+                </input>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Equipment</label><br>
+    
+                <input 
+                type="text"
+                name="equipment_name"
+                id="equipment_name"
+                placeholder="equipment_name"
+                >
+                </input>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Purchase Value</label><br>
+                <input 
+                type="text"
+                
+                name="purchase_value"
+                id="purchase_value"
+                placeholder="purchase_value"
+                >
+            </input><br>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Rental Rate</label><br>
+                <input 
+                type="text"
+                
+                name="rental_rate"
+                id="rental_rate"
+                placeholder="rental_rate"
+                
+                >
+                <!-- onkeyup="this.value=addcommas(this.value)"  -->
+            </input><br>
+        </div>
+
+        <div  class="container mt-3">
+            <label for="BalanceSheet">Descriptions</label><br>
+            <textarea 
+            
+                type="text"
+                name="equipment_decription"
+                id="equipment_decription"
+            
+            >
+               
+            </textarea><br>
+             <!-- style="height:100px;width:180px;overflow:auto;
+                        background-color:rgb(243, 245, 239);color:white;
+                        scrollbar-base-color:gold;
+                        font-family:sans-serif;padding:10px;" -->
+        </div>
+
+
+        
+
+        <div  class="container mt-3">
+            <button type="submit" class="btn btn-success"><i class="fas fa-database">
+            </i>Save</button>
+        </div><br>
+
+        
+        
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        
+        <script>
+       
+       
+
+         // getCookie Provided by Django in the Official Docs
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Setting the Click Event Listener on the Submit Button
+        $('[type="submit"]').on('click', function (e) {
+            e.preventDefault()
+            // Making the AJAX Request
+            $.ajax({
+                url: "{% url 'insert_equipment' %}",
+                type: "POST",
+                data: {
+                    equipment_id:  $('#equipment_id').val(),
+                    equipment_name:  $('#equipment_name').val(),
+                    purchase_value:  $('#purchase_value').val(),
+                    rental_rate:  $('#rental_rate').val(),
+                    equipment_decription:  $('#equipment_decription').val(),
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                success: function (data) {
+                    window.location.href = "{% url 'equipment_list' %}" 
+                    alert('Data has been save')
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+        </script>
+
+        <!-- <script>
+            function addPunctuationToNumbers(number) {
+                return number.replace(/(\d{3})(?=\d)/g, "$1,");
+            }
+        </script> -->
+
+        <script type="text/javascript">
+
+            function addcommas(x) {
+            //remove commas
+            retVal = x ? parseFloat(x.replace(/,/g, '')) : 0;
+        
+            //apply formatting
+            return retVal.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+         </script>
+
+
+        
+
+
+    </form> 
+    
+        
+
+</body>
+
+{% endblock %}
+
+
+
+

@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+
+
+<body>
+    
+
+    <form>
+            
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Equipment ID</label><br>
+    
+                <input 
+                type="text"
+                name="equipment_id"
+                id="equipment_id"
+                placeholder="equipment_id"
+                >
+                </input><br>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Equipment</label><br>
+    
+                <input 
+                type="text"
+                name="equipment_name"
+                id="equipment_name"
+                placeholder="equipment_name"
+                >
+                </input><br>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Purchase Value</label><br>
+                <input 
+                type="text"
+                name="purchase_value"
+                id="purchase_value"
+                placeholder="purchase_value"
+                >
+            </input><br>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Rental Rate</label><br>
+                <input 
+                type="text"
+                name="rental_rate"
+                id="rental_rate"
+                placeholder="rental_rate"
+                >
+            </input><br>
+        </div>
+
+        <div  class="container mt-2">
+            <label for="BalanceSheet">Descriptions</label><br>
+                <input 
+                type="text"
+                name="equipment_decription"
+                id="equipment_decription"
+                placeholder="equipment_decription"
+                >
+            </input><br>
+        </div>
+
+
+        
+
+        <div  class="container mt-3">
+            <button type="submit" class="btn btn-success"><i class="fas fa-database">
+            </i>Save</button>
+        </div><br>
+
+        
+        <div class="container mt-3">
+            <table class="table table-borderless">
+                <thead class="border-bottom font-weight-bold">
+                    <>
+                        <td>ID</td>
+                        <td>Equipment ID</td>
+                        <td>Equipment</td>
+                        <td>Purchase Price</td>
+                        <td>Rental Rate</td>  
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in show_equipment%}
+        
+                        <tr>
+                            <td>{{list.id}}</td>
+                            <td>{{list.equipment_id}}</td>
+                            <td>{{list.equipment_name}}</td>
+                            <td>{{list.purchase_value}}</td>
+                            <td>{{list.equipment_descriptions}}</td>
+                            
+                            <td>
+                                <a href=""
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a>
+                            </td>
+                            <td>
+                                <!-- <a href="{% url 'barcode-delete' list.id%}"method="POST"> -->
+                                <a href="#"method="POST">
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <p>
+                            No Record Found
+                        </p>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+        
+        <script>
+       
+       
+
+         // getCookie Provided by Django in the Official Docs
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        const csrftoken = getCookie('csrftoken');
+
+        // Setting the Click Event Listener on the Submit Button
+        $('[type="submit"]').on('click', function (e) {
+            e.preventDefault()
+            // Making the AJAX Request
+            $.ajax({
+                url: "{% url 'insert_equipment' %}",
+                type: "POST",
+                data: {
+                    equipment_id:  $('#equipment_id').val(),
+                    equipment_name:  $('#equipment_name').val(),
+                    purchase_value:  $('#purchase_value').val(),
+                    rental_rate:  $('#rental_rate').val(),
+                    equipment_decription:  $('#equipment_decription').val(),
+                },
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                success: function (data) {
+                    window.location.href = "/navbar" 
+                
+                    console.log(data);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        })
+        </script>
+
+
+    </form> 
+    
+        
+
+</body>
+</html>
+{% endblock %}
+
+
+
+

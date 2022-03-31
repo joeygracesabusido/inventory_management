@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<style>
+    .modal-body {
+        width: 100%;
+        height: 50%;
+        overflow-y: auto;
+        margin: 50px 0px 0px 0px;
+    }
+    .modal-body.label {
+        text-align: right;
+        display: inline-block;
+        width: 50%;
+    }
+
+    .modal-body.input {
+        text-align: left;
+        display: inline-block;
+        width: 70%;
+    }
+
+    
+</style>
+
+<body>
+    <div  class="container mt-3">
+        <button class="btn btn-success btn-lg " data-toggle="modal" data-target="#modalForm">
+            Add Equipment
+        </button>
+        
+    </div><br>
+
+    <div>
+        <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Add Equipment</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+               
+                    <label for="Equipment ID"
+                        
+                        
+                        >Equipment ID</label><br>
+            
+                        <input 
+                        type="text"
+                        name="equipment_id"
+                        id="equipment_id"
+                        
+                        
+                        >
+                        </input>
+                    <br>
+        
+                
+                    <label for="Equipment Name"
+                        
+                        
+                        >Equipment</label><br>
+            
+                        <input 
+                        type="text"
+                        name="equipment_name"
+                        id="equipment_name"
+                        
+                        >
+                        </input><br>
+               
+        
+               
+                    <label for="BalanceSheet">Purchase Value</label><br>
+                        <input 
+                        type="text"
+                        
+                        name="purchase_value"
+                        id="purchase_value"
+                        
+                        >
+                    </input><br>
+                
+        
+                
+                    <label for="BalanceSheet">Rental Rate</label><br>
+                        <input 
+                        type="text"
+                        
+                        name="rental_rate"
+                        id="rental_rate"
+                       
+                        >
+                        
+                    </input><br>
+                
+        
+                
+                    <label for="BalanceSheet">Descriptions</label><br>
+                    <textarea 
+                    
+                        type="text"
+                        name="equipment_decription"
+                        id="equipment_decription"
+                    
+                    >
+                       
+                    </textarea>
+                     
+                
+        
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" name ="buttonSave" id = "buttonSave"class="btn btn-primary">Save</button>
+            </div>
+            </div>
+        </div>
+    </div>
+    
+    <form class="form">
+        <div class="container mt-3">
+            <table class="table table-borderless">
+                <thead class="border-bottom font-weight-bold">
+                
+                        <td>ID</td>
+                        <td>Equipment ID</td>
+                        <td>Equipment</td>
+                        <td>Purchase Price</td>
+                        <td>Rental Rate</td> 
+                        <td>Equipment Decriptions</td> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for list in sequenceList%}
+        
+                        <tr>
+                            
+                            <td>{{list.id}}</td>
+                            <td>{{list.equipment_id}}</td>
+                            <td>{{list.equipment_name}}</td>
+                            <td>{{list.purchase_value}}</td>
+                            <td>{{list.rental_rate}}</td>
+                            <td>{{list.equipment_descriptions}}</td>
+                            
+                            <td>
+                                <a href=""
+                                <button type="button" class="btn btn-primary">
+                                <i class="fas fa-database"></i> Edit</button></a>
+                            </td>
+                            <td>
+                                
+                                <a href="{% url 'equipmentDelete' list.id%}"method="POST">
+                                    <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                                </a>
+                            </td>
+
+                            
+                        </tr>
+                       
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+        <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+        <script>
+       
+       
+
+            // getCookie Provided by Django in the Official Docs
+           function getCookie(name) {
+               let cookieValue = null;
+               if (document.cookie && document.cookie !== '') {
+                   const cookies = document.cookie.split(';');
+                   for (let i = 0; i < cookies.length; i++) {
+                       const cookie = cookies[i].trim();
+                       // Does this cookie string begin with the name we want?
+                       if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                           cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                           break;
+                       }
+                   }
+               }
+               return cookieValue;
+           }
+           const csrftoken = getCookie('csrftoken');
+   
+           // Setting the Click Event Listener on the Submit Button
+           $('#buttonSave').on('click', function (e) {
+               e.preventDefault()
+               // Making the AJAX Request
+               $.ajax({
+                   url: "{% url 'insert_equipment' %}",
+                   type: "POST",
+                   data: {
+                       equipment_id:  $('#equipment_id').val(),
+                       equipment_name:  $('#equipment_name').val(),
+                       purchase_value:  $('#purchase_value').val(),
+                       rental_rate:  $('#rental_rate').val(),
+                       equipment_decription:  $('#equipment_decription').val(),
+                   },
+                   beforeSend: function (xhr) {
+                       xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                   },
+                   success: function (data) {
+                       window.location.href = "{% url 'equipment_list' %}" 
+                       alert('Data has been save')
+                       console.log(data);
+                   },
+                   error: function (error) {
+                       console.log(error);
+                   }
+               });
+           })
+           </script>
+
+
+            <script>
+                function myFunction() {
+                
+                    document.getElementById('list.rental_rate').value.toFixed(2);
+                    
+                }   
+                
+            </script>
+
+            <script>
+                function numberSeparator(x) {
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                // get all second tds
+                [...document.querySelectorAll('#table tr > td:nth-child(2) input')].forEach(e => {
+                    // get text content and update
+                    e.value =  numberSeparator(e.value.trim());
+                })
+            </script>
+
+            <script>
+                function numberWithCommas(x) {
+                    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+                    }
+            </script>
+
+        
+
+    </form>
+    
+</body>
+{% endblock %}

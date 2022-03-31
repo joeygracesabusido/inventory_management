@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <body>
+        <div>
+            <form>
+                <div  class="container mt-2">
+                    <input
+                        step="0.01"
+                        type="number"
+                        name="quantity"
+                        id="quantity"
+                        style="width: 5em"
+                        class="quantity"
+                        
+                        onchange=myFunction()
+                    >
+                    </input><br>
+        
+                    <input
+                        step="0.01"
+                        type="number"
+                        name="price"
+                        id="price"
+                        style="width: 5em"
+                        class="price"
+                        onchange=myFunction()
+                        
+                    >
+                    </input><br>
+        
+                    <input
+                        step="0.01"
+                        type="number"
+                        name="amount"
+                        id="amount"
+                        style="width: 5em"
+                        class="amount"
+                        
+                        
+                    >
+                    </input><br>
+        
+                </div>
+            </form>
+    
+            <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+            <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+    
+            <script>
+                function myFunction() {
+                    let q = document.getElementById('quantity').value;
+                    let r = document.getElementById('price').value;
+                    let a = document.getElementById('amount');
+                    
+                    var myResult = parseFloat(q * r);
+                        document.getElementById('amount').value = myResult;
+                    // a.value = parseFloat(q.value) * parseFloat (r.value).toFixed(2);
+                    
+                }
+                
+            </script>
+
+        </div>
+        
+    </body>
+
+{% endblock %}

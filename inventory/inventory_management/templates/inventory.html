@@ -1,0 +1,292 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<body>
+    <form>
+        <div  class="container mt-2">
+            <label for="Inventory Date" >Date</label><br>
+    
+                <!-- <select name="clients_name_inv" id="clients_name_inv" class="filter-selectbox" >
+                    
+                    {% for result in showclients %}
+                        <option value="{{ result.customer_name }}">{{ result.customer_name }}
+                        </option>
+                    {% endfor %} 
+                
+                </select> -->
+                <input
+                type="date"
+                name="clients_name_inv"
+                id="clients_name_inv"
+                size="30"
+                >
+                </input><br>
+                 
+    
+            
+            
+            <label for="Transaction Type" >Transaction Type</label><br>
+                <select id="transType" name="mySelect"
+               >
+                    <option value="">---</option>
+                    <option value="1">In</option>
+                    <option value="2">Out</option>
+                
+                </select> <br> 
+
+            <label for="MRS" >MRS</label><br>
+                <input
+                    type="text"
+                    name="mrs"
+                    id="mrs"
+                    size="17"
+                    >
+                </input><br>
+            <label for="Requested By" >Requested By</label><br>
+                <input
+                    type="text"
+                    name="requested_by"
+                    id="requested_by"
+                    size="17"
+                    >
+                </input><br>
+
+               
+        </div>
+        <div>
+            <table class="table table-borderless">
+                <thead class="border-bottom font-weight-bold">
+                    <tr>
+                        
+                        <td>Inventory ID</td>
+                        <td>Brand</td>
+                        <td>Category Type</td>
+                        <td>Item Descriptions</td>
+                        <td>Quantity</td>
+                        <td>Unit</td>
+                        <td>Price</td>
+                        <td>Amount</td>
+                        <td>Equipment</td>
+                       
+                        <td>
+                            <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                            </i>Add</button>
+                        </td>
+
+                       
+                    </tr>
+                </thead>
+                <tbody id="addrow">
+                    
+                    
+                </tbody>
+            </table>
+        </div>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script>
+
+    <script type="text/javascript">
+        function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            const csrftoken = getCookie('csrftoken');
+
+            // Setting the Click Event Listener on the Submit Button
+            $(document).ready(function(){
+                var maxField = 10; //Input fields increment limitation
+                var addButton = $('#add_button'); //Add button selector
+                var wrapper = $('#addrow'); //Input field wrapper
+                var x = 0; //Initial field counter is 1
+                
+                //Once add button is clicked
+                $(addButton).click(function(){
+                    //Check maximum number of input fields
+                    x++; //Increment field counter
+                    var fieldHTML = `<tr>
+                    <td>
+                        <input type=text hidden id="row_count" value=${x} />
+                        <input
+                            type="text"
+                            name="inventory_id"
+                            id="inventory_id${x}"
+                            class="inventory_id"
+                            size='7'
+                            onchange=myFunction()
+                        >
+                        </input
+                          
+                    </td>
+
+                    <td>
+                        <input
+                            type="text"
+                            name="brand"
+                            id="brand${x}"
+                            class="brand"
+                            size='10'
+                            onchange=myFunction()
+                        >
+                        </input
+                    </td>
+
+                    <td>
+                        <select id="myCategory${x}" name="myCategory">
+                            <option value="">---</option>
+                            <option value="1">Tires</option>
+                            <option value="2">Oil & Lubricants</option>
+                            <option value="2">Mechanical Parts</option>
+                            <option value="2">Office Supplies</option>
+                            <option value="2">Tools Supplies</option>
+                            <option value="2">Others Supplies</option>
+                           
+                        </select>
+                    </td>
+
+                    <td>
+                        <input
+                            type="text"
+                            name="itemdescriptions"
+                            id="itemdescriptions${x}"
+                            class="itemdescriptions"
+                            size='15'
+                            
+                        >
+                        </input
+                    </td>
+
+                    <td>
+                        <input
+                            step="0.01"
+                            type="number"
+                            name="quantity"
+                            id="quantity${x}"
+                            style="width: 5em"
+                            class="quantity"
+                            
+                            
+                        >
+                        </input
+                        
+                    </td>
+
+                
+                    
+
+                    <td>
+                        <input
+                            type="text"
+                            name="unit"
+                            id="unit${x}"
+                            class="unit"
+                            size='7'
+                            
+                            onchange=myFunction2()
+                        >
+                        </input
+                    </td>
+
+                    <td>
+                        <input
+                        
+                            type="number"
+                            name="price"
+                            id="price${x}"
+                            class="price"
+                            style="width: 8em"
+                            onchange=myFunction2()
+                        >
+                        </input
+                        
+                    </td>
+
+                    <td>
+                        <input
+                            
+                            type="number"
+                            name="amount"
+                            id="amount${x}"
+                            class="amount"
+                            style="width: 8em"
+                            
+                        >
+                        </input
+                        
+                    </td>
+                    <td>
+                        <select name="Equipment" id="Equipment${x}"class="filter-selectbox">
+
+                            {% for result in sequenceList %}
+                                <option value="{{ result.id }}">{{ result.equipment_id }}</option>
+                            {% endfor %} 
+
+                        </select> 
+                    </td>
+                    <td>
+                        <button type="button"  id="remove_button" class="btn btn-danger"><i class="fas fa-database">
+                        </i>Remove</button>
+                    </td>
+                    </tr> `; //New input field html 
+                    $(wrapper).append(fieldHTML); //Add field html
+                    
+                });
+                
+                //Once remove button is clicked
+                $(wrapper).on('click', '#remove_button', function(e){
+                    e.preventDefault();
+                    $(this).closest('tr').remove(); //Remove field html 
+                    myFunction();
+                    x--; //Decrement field counter
+                });
+            });
+       
+
+
+    </script>
+
+    <script>
+        function myFunction() {
+        let elements = [...document.getElementsByName('BalanceSheetType')];
+        let sum = 0.0;
+        console.log(elements)
+        elements.forEach((el) => {
+            let myID = (el.id).replace('BalanceSheetType', '');
+        
+        
+            })
+        
+        }
+        
+    </script>
+
+    <script>
+         function myFunction2(i) {
+                let q = document.getElementById('quantity' + i);
+                let r = document.getElementById('price' + i);
+                let a = document.getElementById('amount'+ i);
+
+                a = parseFloat(q.value * r.value).toFixed(2);
+                // myFunction();
+                console.log(a)
+            }
+      
+        
+    </script>       
+       
+
+</body>
+
+{% endblock %}
