@@ -176,7 +176,7 @@
                             id="quantity${x}"
                             style="width: 5em"
                             class="quantity"
-                            
+                            onchange="myFunction2(${x})"
                             
                         >
                         </input
@@ -193,8 +193,6 @@
                             id="unit${x}"
                             class="unit"
                             size='7'
-                            
-                            onchange=myFunction2()
                         >
                         </input
                     </td>
@@ -207,7 +205,7 @@
                             id="price${x}"
                             class="price"
                             style="width: 8em"
-                            onchange=myFunction2()
+                            onchange="myFunction2(${x})"
                         >
                         </input
                         
@@ -221,6 +219,7 @@
                             id="amount${x}"
                             class="amount"
                             style="width: 8em"
+                            
                             
                         >
                         </input
@@ -274,13 +273,14 @@
 
     <script>
          function myFunction2(i) {
-                let q = document.getElementById('quantity' + i);
-                let r = document.getElementById('price' + i);
+                let q = document.getElementById('quantity' + i).value;
+                let r = document.getElementById('price' + i).value;
                 let a = document.getElementById('amount'+ i);
 
-                a = parseFloat(q.value * r.value).toFixed(2);
+                amount = q * r;
                 // myFunction();
-                console.log(a)
+                console.log(amount);
+                a.value = parseFloat(amount).toFixed(2);
             }
       
         
