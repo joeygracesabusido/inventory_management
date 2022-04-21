@@ -141,11 +141,11 @@ def save_inventory_in(request):
         data_.pop('mrs')
         data_.pop('requested_by')
         
-        # print(data_)
+        print(data_)
         entry = len(data_['inventory_id'])
         
-        for k in data_.items():
-            print(k)
+        # for k in data_.items():
+        #     print(k)
     
         # result = []
         # for i in range(entry):
