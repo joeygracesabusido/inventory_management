@@ -5,8 +5,8 @@
 <s>
     <form action="{% url 'insert-inventory-in' %}" method="POST">
         {% csrf_token %}
-        <div  class="container mt-2">
-            <label for="Inventory Date" >Date</label><br>
+        <div  class="container mt-2"><br>
+            <label for="Inventory Date" >Date</label>
     
                 <!-- <select name="clients_name_inv" id="clients_name_inv" class="filter-selectbox" >
                     
@@ -22,29 +22,52 @@
                 id="inventory_date"
                 size="30"
                 >
-                </input><br>
+                </input>
+
+                <label for="Sales Invoice" >Sales Invoice</label>
+
+                <input
+                type="text"
+                name="sales_invoice"
+                id="sales_invoice"
+                size="15"
+                >
+                </input>
+                
+                <label for="Supplier" >Supplier</label>
+
+                <input
+                type="text"
+                name="supplier"
+                id="supplier"
+                size="40"
+                >
+                </input>
+                
+                
+                <br>
                  
     
             
             
-            <label for="Transaction Type" >Transaction Type</label><br>
+            <label for="Transaction Type" >Transaction Type</label>
                 <select id="transType" name="transType"
                >
                     <option value="">---</option>
                     <option value="1">In</option>
                     <option value="2">Out</option>
                 
-                </select> <br> 
+                </select> 
 
-            <label for="MRS" >MRS</label><br>
+            <label for="MRS" >MRS</label>
                 <input
                     type="text"
                     name="mrs"
                     id="mrs"
                     size="17"
                     >
-                </input><br>
-            <label for="Requested By" >Requested By</label><br>
+                </input>
+            <label for="Requested By" >Requested By</label>
                 <input
                     type="text"
                     name="requested_by"

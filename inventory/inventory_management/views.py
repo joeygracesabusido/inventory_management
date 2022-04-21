@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib import messages, auth
 
-from .models import equipment
+from .models import equipment, inventory_db, inventory_transaction
 
 from django.shortcuts import HttpResponse
 
@@ -128,11 +128,11 @@ def save_inventory_in(request):
         mrs_no = request.POST.get('mrs')
         requested_by = request.POST.get('requested_by')
       
-        # journal_save = Journal.objects.create(
-        #     trans_date = trans_date,
-        #     ref = ref,
-        #     memo = memo
-        # )
+        journal_save = inventory_db.objects.create(
+            trans_date = trans_date,
+            ref = ref,
+            memo = memo
+        )
         
         data_ = dict(request.POST.lists())
         data_.pop('csrfmiddlewaretoken')
