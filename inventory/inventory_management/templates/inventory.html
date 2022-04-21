@@ -2,8 +2,9 @@
 
 {% block content %}
 
-<body>
-    <form>
+<s>
+    <form action="{% url 'insert-inventory-in' %}" method="POST">
+        {% csrf_token %}
         <div  class="container mt-2">
             <label for="Inventory Date" >Date</label><br>
     
@@ -17,8 +18,8 @@
                 </select> -->
                 <input
                 type="date"
-                name="clients_name_inv"
-                id="clients_name_inv"
+                name="inventory_date"
+                id="inventory_date"
                 size="30"
                 >
                 </input><br>
@@ -27,7 +28,7 @@
             
             
             <label for="Transaction Type" >Transaction Type</label><br>
-                <select id="transType" name="mySelect"
+                <select id="transType" name="transType"
                >
                     <option value="">---</option>
                     <option value="1">In</option>
@@ -54,9 +55,9 @@
 
                
         </div>
-        <div>
+        <div class="container mt-3">
             <table class="table table-borderless">
-                <thead class="border-bottom font-weight-bold">
+                <thead class="font-weight-bold">
                     <tr>
                         
                         <td>Inventory ID</td>
@@ -82,6 +83,10 @@
                     
                 </tbody>
             </table>
+        </div>
+
+        <div class="container mt 1">
+            <button type= "submit" class="btn btn-primary">Save</button>
         </div>
     </form>
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
@@ -204,7 +209,7 @@
                             name="price"
                             id="price${x}"
                             class="price"
-                            style="width: 8em"
+                            style="width: 5em"
                             onchange="myFunction2(${x})"
                         >
                         </input
@@ -229,6 +234,7 @@
                         <select name="Equipment" id="Equipment${x}"class="filter-selectbox">
 
                             {% for result in sequenceList %}
+                                
                                 <option value="{{ result.id }}">{{ result.equipment_id }}</option>
                             {% endfor %} 
 
@@ -256,7 +262,7 @@
 
     </script>
 
-    <script>
+    <!-- <script>
         function myFunction() {
         let elements = [...document.getElementsByName('BalanceSheetType')];
         let sum = 0.0;
@@ -269,7 +275,7 @@
         
         }
         
-    </script>
+    </script> -->
 
     <script>
          function myFunction2(i) {
@@ -279,12 +285,25 @@
 
                 amount = q * r;
                 // myFunction();
+                // myFunction1()
                 console.log(amount);
                 a.value = parseFloat(amount).toFixed(2);
             }
       
         
-    </script>       
+    </script>   
+    <script>
+        function myFunction1(i){
+            var b = document.getElementById('amount' + i).value;
+            var numUSD = new Intl.NumberFormat("en-US")
+        
+    
+        }
+        
+    </script>
+
+
+   
        
 
 </body>

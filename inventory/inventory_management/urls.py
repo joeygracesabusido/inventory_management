@@ -11,5 +11,6 @@ urlpatterns = [
     path('equipmentDelete/<int:id>/', views.delete_equipment, name="equipmentDelete"),
     path('inventory/', views.test_inventory, name="inventory"),
     path('test-html/', views.test, name="test-html"),
+    path('insert-inventory-in/', views.save_inventory_in, name="insert-inventory-in"),
    
 ]
