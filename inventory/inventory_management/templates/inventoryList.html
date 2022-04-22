@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form class="form" action="{% url 'inventorylist' %}" method ="POST">
+    {% csrf_token %}
+    <div class="container mt-3">
+        <input type="text"
+        name='Inventory_id'
+        placeholder="Inventory ID"
+        />   
+
+
+        <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
+
+        <input type="text"
+        name='equipment_id'
+        placeholder="Equipment ID"
+        />   
+
+
+        <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
+    </div>
+    <div class="container mt-3">
+        <table class="table table-borderless">
+            <thead class="border-bottom font-weight-bold">
+
+                    <!-- <td>Date</td> -->
+                    <td>ID</td>
+                    <td>Inventory ID</td>
+                    <td>Quantity</td>
+                    <td>Unit</td>
+                    <td>Price</td> 
+                    <td>Amount</td> 
+                    <td>Equipment</td> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for list in inventory_list%}
+    
+                    <tr>
+                        <!-- <td>{{list.transactions_inventory.trans_date}}</td> -->
+                        <td>{{list.id}}</td>
+                        <td>{{list.inventory_id}}</td>
+                        <td>{{list.quantity}}</td>
+                        <td>{{list.unit_measurement}}</td>
+                        <td>{{list.inventory_price}}</td>
+                        <td>{{list.inventory_amount}}</td>
+                        <td>{{list.equipment}}</td>
+                        
+                        <td>
+                            <a href=""
+                            <button type="button" class="btn btn-primary">
+                            <i class="fas fa-database"></i> Edit</button></a>
+                        </td>
+                        <td>
+                            
+                            <!-- <a href="{% url 'equipmentDelete' list.id%}"method="POST">
+                                <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                            </a> -->
+                        </td>
+                        
+
+                        
+                    </tr>
+                    {% empty %}
+                        <p>
+                            No Record found click add new Button
+                        </p>
+                       
+                   
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+{% endblock %}

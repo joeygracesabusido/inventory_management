@@ -194,28 +194,45 @@ def save_inventory_in(request):
                 equipment = r['Equipment']
             )
 
-            # print(type(k[0]))
-            # print(k[1])
-            
-        #     for i, val in enumerate(k[1]):
-        #         print(k[1][i])
-            # print(type(k['BalanceSheetType']))
-            # print(type(k['BalanceSheetType'][0]))
-        # for i, val in enumerate(gl_account):
-        #     print(i)
-        
-            
-            
-            # db_save = Transaction.objects.create(
-            #     journal = journal_save,
-            #     tx_type = trans_date,
-            #     gl_account = ref,
-            #     amount = memo
-            # )
     
-        return redirect('navbar')
+        return redirect('/inventorylist')
         # return render(request,'choices.html')
     
-    
-    
+
     return render(request,'inventory.html')
+
+def inventory_list(request):
+    """
+    This function is for inventory List
+    """
+
+    # if request.method=="POST":
+        
+    #     search_param = request.POST.get('Inventory_id')
+        
+    #     searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+    #                                          unit_measurement,inventory_price,inventory_amount,\
+    #                                              equipment\
+    #                                         from inventory_transaction where \
+    #                                         inventory_id like "%'+ search_param +'%"')
+        
+    #     return render (request,"inventoryList.html", {"inventory_list": searchResult})
+    
+    if request.method=="POST":
+        
+        search_param = request.POST.get('equipment_id')
+        
+        searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                             unit_measurement,inventory_price,inventory_amount,\
+                                                 equipment\
+                                            from inventory_transaction where \
+                                            equipment like "%'+ search_param +'%"')
+        
+        return render (request,"inventoryList.html", {"inventory_list": searchResult})
+
+    else:
+        context = {
+            'inventory_list': inventory_transaction.objects.all()
+        }
+        return render(request,'inventoryList.html',context)
+
