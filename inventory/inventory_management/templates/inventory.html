@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-<s>
     <form action="{% url 'insert-inventory-in' %}" method="POST">
         {% csrf_token %}
         <div  class="container mt-2"><br>
@@ -79,8 +77,8 @@
                
         </div>
         <div class="container mt-3">
-            <table class="table table-borderless">
-                <thead class="font-weight-bold">
+            <table class="table">
+                <thead>
                     <tr>
                         
                         <td>Inventory ID</td>
@@ -324,11 +322,5 @@
         }
         
     </script>
-
-
-   
-       
-
-</body>
 
 {% endblock %}
