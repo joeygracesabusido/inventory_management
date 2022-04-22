@@ -46,7 +46,7 @@ class inventory_db(models.Model):
         db_table = 'inventory'
 
     def __str__(self):
-        return f'{self.inventory_id} - {self.item_description}'
+        return f'{self.trans_date} - {self.sales_invoice}'
 
 class inventory_transaction(models.Model):
     CATEGORY_TYPE = (

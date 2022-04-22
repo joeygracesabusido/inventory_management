@@ -213,7 +213,7 @@ def save_inventory_in(request):
             #     amount = memo
             # )
     
-        return redirect('/')
+        return redirect('navbar')
         # return render(request,'choices.html')
     
     
