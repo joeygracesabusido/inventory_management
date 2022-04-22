@@ -125,13 +125,18 @@ def save_inventory_in(request):
     if request.method == 'POST':
         trans_date = request.POST.get('inventory_date')
         transtype = request.POST.get('transType')
+        sales_invoice = request.POST.get('sales_invoice')
+        supplier_in = request.POST.get('supplier')
         mrs_no = request.POST.get('mrs')
         requested_by = request.POST.get('requested_by')
       
         journal_save = inventory_db.objects.create(
             trans_date = trans_date,
-            ref = ref,
-            memo = memo
+            transaction_type = transtype,
+            sales_invoice = sales_invoice,
+            supplier = supplier_in,
+            mrs_number = mrs_no,
+            requested_by =requested_by
         )
         
         data_ = dict(request.POST.lists())
@@ -140,33 +145,54 @@ def save_inventory_in(request):
         data_.pop('transType')
         data_.pop('mrs')
         data_.pop('requested_by')
+        data_.pop('sales_invoice')
+        data_.pop('supplier')
         
-        print(data_)
-        entry = len(data_['inventory_id'])
         
-        # for k in data_.items():
-        #     print(k)
+        entry = len(data_['inventory_id_in'])
+        
+        for k in data_.items():
+            print(k)
     
-        # result = []
-        # for i in range(entry):
-        #     d={}
-        #     for j,k in enumerate(data_.items()):
-        #         if j == 0:
-        #             d['gl_type']= (k[1][i])
-        #         elif j == 1:
-        #             d['tx_type']= (k[1][i])
-        #         elif j == 2:
-        #             d['amount']= (k[1][i])
-        #     result.append(d)
+        result = []
+        for i in range(entry):
+            d={}
+            for j,k in enumerate(data_.items()):
+                if j == 0:
+                    d['inventory_id_in']= (k[1][i])
+                elif j == 1:
+                    d['brand']= (k[1][i])
+                elif j == 2:
+                    d['myCategory']= (k[1][i])
+               
+                elif j == 3:
+                    d['itemdescriptions']= (k[1][i])
+                elif j == 4:
+                    d['quantity']= (k[1][i])
+                elif j == 5:
+                    d['unit']= (k[1][i])
+                elif j == 6:
+                    d['price']= (k[1][i])
+                elif j == 7:
+                    d['amount']= (k[1][i])
+                elif j == 8:
+                    d['Equipment']= (k[1][i])
+            result.append(d)
 
 
-        # for r in result:
-        #     Transaction.objects.create(
-        #         journal = journal_save,
-        #         tx_type = r['tx_type'],
-        #         gl_account_id = r['gl_type'],
-        #         amount = r['amount']
-        #     )
+        for r in result:
+            inventory_transaction.objects.create(
+                transactions_inventory = journal_save,
+                inventory_id = r['inventory_id_in'],
+                brand = r['brand'],
+                category_inv = r['myCategory'],
+                item_description = r['itemdescriptions'],
+                quantity = r['quantity'],
+                unit_measurement = r['unit'],
+                inventory_price = r['price'],
+                inventory_amount = r['amount'],
+                equipment = r['Equipment']
+            )
 
             # print(type(k[0]))
             # print(k[1])
