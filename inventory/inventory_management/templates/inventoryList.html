@@ -60,7 +60,8 @@
                 {% for list in inventory_list%}
     
                     <tr>
-                        <td>{{list.transactions_inventory.trans_date}}</td>
+                        <!-- <td>{{list.transactions_inventory.trans_date}}</td> -->
+                        <td>{{list.trans_date}}</td>
                         <td>{{list.id}}</td>
                         <td>{{list.inventory_id}}</td>
                         <td>{{list.quantity}}</td>

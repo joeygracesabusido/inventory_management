@@ -183,6 +183,7 @@ def save_inventory_in(request):
         for r in result:
             inventory_transaction.objects.create(
                 transactions_inventory = journal_save,
+                trans_date = trans_date,
                 inventory_id = r['inventory_id_in'],
                 brand = r['brand'],
                 category_inv = r['myCategory'],
@@ -251,12 +252,20 @@ def inventory_list(request):
 
         elif equipment_search =='' and inventory_search == '' and date_from !='' and date_to !='' :
 
+            # searchResult = inventory_db.objects.all()
+            # searchResult2 = inventory_db.objects.filter(trans_date__gte =date_to )
+            # # searchResult =  inventory_transaction.objects.all()
+            # # for i in searchResult:
+            # #     z = i.transactions_inventory.trans_date
+            # #     print(z)
+
+
             searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
                                                 unit_measurement,inventory_price,inventory_amount,\
                                                     equipment\
                                                 from inventory_transaction where \
-                                                    transactions_inventory BETWEEN \
-                                                     date_from  AND date_to ')
+                                                    trans_date BETWEEN \
+                                                     "'+ date_from +'"  AND "'+ date_to +'"' )
         
             return render (request,"inventoryList.html", {"inventory_list": searchResult})
 

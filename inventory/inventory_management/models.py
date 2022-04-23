@@ -58,6 +58,7 @@ class inventory_transaction(models.Model):
         ('6', _('Others Supplies')),
     )
     transactions_inventory = models.ForeignKey(inventory_db, on_delete=models.CASCADE, null=True, blank=True)
+    trans_date = models.DateField(default=date.today, verbose_name=_('Date'))
     inventory_id = models.CharField(max_length=20, verbose_name=_('Inventory id'))
     brand = models.CharField(max_length=100,verbose_name=_('Brand'))
     category_inv = models.CharField(max_length=25, choices=CATEGORY_TYPE, verbose_name=_('Category Type'))
