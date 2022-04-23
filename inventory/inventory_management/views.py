@@ -220,6 +220,9 @@ def inventory_list(request):
     
     if request.method=="POST":
         
+        # equipment_search = request.POST.get('equipment_id')
+        # inventory_search = request.POST.get('Inventory_id')
+
         search_param = request.POST.get('equipment_id')
         
         searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\

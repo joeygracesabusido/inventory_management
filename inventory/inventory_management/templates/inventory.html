@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<s>
+
     <form action="{% url 'insert-inventory-in' %}" method="POST">
         {% csrf_token %}
         <div  class="container mt-2"><br>
@@ -78,36 +78,37 @@
 
                
         </div>
-        <div class="container mt-3">
-            <table class="table table-borderless">
-                <thead class="font-weight-bold">
-                    <tr>
+        <div>
+            <div class="container mt-3">
+                <table class="table table-borderless">
+                    <thead class="font-weight-bold">
+                        <tr>
+                            
+                            <td>Inventory ID</td>
+                            <td>Brand</td>
+                            <td>Category Type</td>
+                            <td>Item Descriptions</td>
+                            <td>Quantity</td>
+                            <td>Unit</td>
+                            <td>Price</td>
+                            <td>Amount</td>
+                            <td>Equipment</td>
                         
-                        <td>Inventory ID</td>
-                        <td>Brand</td>
-                        <td>Category Type</td>
-                        <td>Item Descriptions</td>
-                        <td>Quantity</td>
-                        <td>Unit</td>
-                        <td>Price</td>
-                        <td>Amount</td>
-                        <td>Equipment</td>
-                       
-                        <td>
-                            <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
-                            </i>Add</button>
-                        </td>
+                            <td>
+                                <button type="button"  id="add_button" class="btn btn-primary"><i class="fas fa-database">
+                                </i>Add</button>
+                            </td>
 
-                       
-                    </tr>
-                </thead>
-                <tbody id="addrow">
-                    
-                    
-                </tbody>
-            </table>
+                        
+                        </tr>
+                    </thead>
+                    <tbody id="addrow">
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
-
         <div class="container mt 1">
             <button type= "submit" class="btn btn-primary">Save</button>
         </div>
