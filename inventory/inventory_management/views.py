@@ -206,36 +206,77 @@ def inventory_list(request):
     This function is for inventory List
     """
 
-    # if request.method=="POST":
-        
-    #     search_param = request.POST.get('Inventory_id')
-        
-    #     searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-    #                                          unit_measurement,inventory_price,inventory_amount,\
-    #                                              equipment\
-    #                                         from inventory_transaction where \
-    #                                         inventory_id like "%'+ search_param +'%"')
-        
-    #     return render (request,"inventoryList.html", {"inventory_list": searchResult})
-    
+   
     if request.method=="POST":
         
-        # equipment_search = request.POST.get('equipment_id')
-        # inventory_search = request.POST.get('Inventory_id')
+        equipment_search = request.POST.get('equipment_id')
+        inventory_search = request.POST.get('Inventory_id')
+        date_from = request.POST.get('date_from')
+        date_to = request.POST.get('date_to')
+        
 
-        search_param = request.POST.get('equipment_id')
+        if equipment_search != '' and  inventory_search != '':
+            
+
+            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                                unit_measurement,inventory_price,inventory_amount,\
+                                                    equipment\
+                                                from inventory_transaction where \
+                                                equipment like "%'+ equipment_search +'%" and \
+                                                inventory_id like "%'+ inventory_search +'%"' )
         
-        searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                             unit_measurement,inventory_price,inventory_amount,\
-                                                 equipment\
-                                            from inventory_transaction where \
-                                            equipment like "%'+ search_param +'%"')
+            return render (request,"inventoryList.html", {"inventory_list": searchResult})
         
-        return render (request,"inventoryList.html", {"inventory_list": searchResult})
+        elif equipment_search != '' and inventory_search == '':
+
+            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                                unit_measurement,inventory_price,inventory_amount,\
+                                                    equipment\
+                                                from inventory_transaction where \
+                                                equipment like "%'+ equipment_search +'%"' )
+        
+            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+
+        
+        elif equipment_search == '' and inventory_search != '':
+    
+            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                                unit_measurement,inventory_price,inventory_amount,\
+                                                    equipment\
+                                                from inventory_transaction where \
+                                                inventory_id like "%'+ inventory_search +'%"' )
+        
+            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+
+
+        elif equipment_search =='' and inventory_search == '' and date_from !='' and date_to !='' :
+
+            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                                unit_measurement,inventory_price,inventory_amount,\
+                                                    equipment\
+                                                from inventory_transaction where \
+                                                    transactions_inventory BETWEEN \
+                                                     date_from  AND date_to ')
+        
+            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+
+
+        elif equipment_search == '' and inventory_search == '':
+            context = {
+            'inventory_list': inventory_transaction.objects.all()
+            }
+
+            
+            return render(request,'inventoryList.html',context)
+       
+        
+
 
     else:
         context = {
             'inventory_list': inventory_transaction.objects.all()
         }
+
+        
         return render(request,'inventoryList.html',context)
 

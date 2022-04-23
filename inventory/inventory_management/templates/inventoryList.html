@@ -10,13 +10,34 @@
         placeholder="Inventory ID"
         />   
 
-
-        <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
-
         <input type="text"
         name='equipment_id'
         placeholder="Equipment ID"
         />   
+
+        <label for="DateFrom">Date From</label>
+
+        <input type="date"
+        name='date_from'
+        
+        />   
+
+        <label for="DateTo">Date To</label>
+
+        <input type="date"
+        name='date_to'
+        
+        />   
+       
+
+        <!-- <select name="Equipment" id="Equipment">
+
+            {% for result in sequenceList2 %}
+                <option value="{{ result.equipment_id }}">{{ result.equipment_id }}</option>
+            {% endfor %} 
+           
+
+        </select>  -->
 
 
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
@@ -48,11 +69,11 @@
                         <td>{{list.inventory_amount}}</td>
                         <td>{{list.equipment}}</td>
                         
-                        <td>
+                        <!-- <td>
                             <a href=""
                             <button type="button" class="btn btn-primary">
                             <i class="fas fa-database"></i> Edit</button></a>
-                        </td>
+                        </td> -->
                         <td>
                             
                             <!-- <a href="{% url 'equipmentDelete' list.id%}"method="POST">
