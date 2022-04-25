@@ -62,18 +62,18 @@
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
     </div>
     <div class="container mt-3">
-        <input class="text-white bg-primary" type="text"
+        <!-- <input class="text-white bg-primary" type="text"
         name='total_amount'
         style="height:100px;width: 190px"
         
        
-        /> 
+        />  -->
         
       
 
     </div>
     <div class="container mt-3">
-        <table class="table table-borderless">
+        <table class="table table-borderless" id="inventoryList_table">
             <thead class="border-bottom font-weight-bold">
 
                     <td>Date</td>
@@ -177,7 +177,7 @@
      </script> -->
 
 
-   <script>
+   <!-- <script>
        $(document).ready(function () {
         $('tr').each(function () {
             var sum = 0
@@ -195,8 +195,37 @@
             // console.log(sum)
         });
         });
+   </script> -->
+   <script>
+       $(document).ready(function()
+        {
+            var emp_amount;
+            var total = 0
+            $('td:nth-child(7)').each(function()
+            {
+                emp_amount=$(this).html();
+                console.log(emp_amount)
+                total+= parseFloat(emp_amount);
+                // console.log(total)
+                // $('#Total_amount').text(total);
+                // console.log(total)
+
+            });
+        });
    </script>
-   
+
+
+   <!-- <script  type="text/javascript">
+           var table = document.getElementById('inventoryAmount'),sumValue =0;
+           console.log(table)
+
+           for (var i = 1; i <table.rows.length; i++)
+           {
+               sumValue = sumValue + parseInt(table.rows[i].cells[7].innerHTML);
+           }
+           console.log(sumValue)
+   </script>
+    -->
 
     
 

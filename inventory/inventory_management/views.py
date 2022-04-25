@@ -262,16 +262,17 @@ def inventory_list(request):
             # #     print(z)
 
 
-            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-            #                                     unit_measurement,inventory_price,inventory_amount,\
-            #                                         equipment\
-            #                                     from inventory_transaction where \
-            #                                         trans_date BETWEEN \
-            #                                          "'+ date_from +'"  AND "'+ date_to +'"' )
+            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+                                                unit_measurement,inventory_price,inventory_amount,\
+                                                    equipment\
+                                                from inventory_transaction where \
+                                                    trans_date BETWEEN \
+                                                     "'+ date_from +'"  AND "'+ date_to +'"' )
 
-            searchResult = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
+            # searchResult2 = searchResult.objects.aggregate(Sum('inventory_amount'))
         
-            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+            return render (request,"inventoryList.html", {"inventory_list": searchResult}
+                                        )
 
 
         elif equipment_search == '' and inventory_search == '':
