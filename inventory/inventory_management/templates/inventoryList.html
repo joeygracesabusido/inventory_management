@@ -15,6 +15,11 @@
   
     
 </style> 
+<!-- <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script> -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+
 
 <form class="form" action="{% url 'inventorylist' %}" method ="POST">
     {% csrf_token %}
@@ -57,11 +62,14 @@
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
     </div>
     <div class="container mt-3">
-        <input class="text-white bg-dark" type="text"
+        <input class="text-white bg-primary" type="text"
         name='total_amount'
         style="height:100px;width: 190px"
+        
        
-        />   
+        /> 
+        
+      
 
     </div>
     <div class="container mt-3">
@@ -89,7 +97,7 @@
                         <td>{{list.quantity}}</td>
                         <td>{{list.unit_measurement}}</td>
                         <td>{{list.inventory_price}}</td>
-                        <td>{{list.inventory_amount}}</td>
+                        <td id="inventoryAmount">{{list.inventory_amount}}</td>
                         <td>{{list.equipment}}</td>
                         
                         <!-- <td>
@@ -114,9 +122,83 @@
                        
                    
                 {% endfor %}
-            </tbody>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td id="Total_amount">
+
+                    </td>
+                </tr>
+            </tbody> 
         </table>
     </div>
 
+    <!-- <script>
+        // $(document).ready(function()
+        // {
+            
+    
+        //     // $('td:nth-child(7)').each(function()
+        //     // {
+        //     //     emp_amount=$(this).html();
+        //     //     total+= parseFloat(emp_amount);
+               
+        //     //     $('#Total_amount').text(total);
+        //     //     console.log(total)
+    
+        //     // }
+        //     // );
+      
+    
+    
 
+
+        
+       
+    
+        // });
+
+
+        $(document).ready(function(){
+                var sum = 0;
+                var quantity = 0;
+                var singleProduct,singleQuantity;
+
+                $('.Total_amount').each(function() {
+                singleProduct = parseFloat($(this).val());
+                console.log('wala');
+                });
+        });
+
+     </script> -->
+
+
+   <script>
+       $(document).ready(function () {
+        $('tr').each(function () {
+            var sum = 0
+            $(this).find('#inventoryAmount').each(function () {
+            var combat = $(this).text();
+            
+            
+            console.log(sum)
+            if (!isNaN(combat) && combat.length !== 0) {
+                sum += combat;
+                console.log(sum)
+            }
+            });
+            $('#Total_amount', this).html(sum);
+            // console.log(sum)
+        });
+        });
+   </script>
+   
+
+    
+
+</form>
 {% endblock %}

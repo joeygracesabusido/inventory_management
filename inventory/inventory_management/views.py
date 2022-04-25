@@ -10,16 +10,18 @@ from .models import equipment, inventory_db, inventory_transaction
 
 from django.shortcuts import HttpResponse
 
-def is_ajax(request):
-    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+from django.db.models import Sum
+
+# def is_ajax(request):
+#     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
 
-def ajax_test(request):
-    if is_ajax(request=request):
-        message = "This is ajax"
-    else:
-        message = "Not ajax"
-    return HttpResponse(message)
+# def ajax_test(request):
+#     if is_ajax(request=request):
+#         message = "This is ajax"
+#     else:
+#         message = "Not ajax"
+#     return HttpResponse(message)
 
 
 
@@ -260,12 +262,14 @@ def inventory_list(request):
             # #     print(z)
 
 
-            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                                unit_measurement,inventory_price,inventory_amount,\
-                                                    equipment\
-                                                from inventory_transaction where \
-                                                    trans_date BETWEEN \
-                                                     "'+ date_from +'"  AND "'+ date_to +'"' )
+            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+            #                                     unit_measurement,inventory_price,inventory_amount,\
+            #                                         equipment\
+            #                                     from inventory_transaction where \
+            #                                         trans_date BETWEEN \
+            #                                          "'+ date_from +'"  AND "'+ date_to +'"' )
+
+            searchResult = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
         
             return render (request,"inventoryList.html", {"inventory_list": searchResult})
 
