@@ -2,6 +2,20 @@
 
 {% block content %}
 
+
+<style>
+   
+
+    #total_amount {
+        width: 200px;
+        
+    }
+
+
+  
+    
+</style> 
+
 <form class="form" action="{% url 'inventorylist' %}" method ="POST">
     {% csrf_token %}
     <div class="container mt-3">
@@ -41,6 +55,14 @@
 
 
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
+    </div>
+    <div class="container mt-3">
+        <input class="text-white bg-dark" type="text"
+        name='total_amount'
+        style="height:100px;width: 190px"
+       
+        />   
+
     </div>
     <div class="container mt-3">
         <table class="table table-borderless">
