@@ -13,5 +13,10 @@ urlpatterns = [
     path('test-html/', views.test, name="test-html"),
     path('insert-inventory-in/', views.save_inventory_in, name="insert-inventory-in"),
     path('inventorylist/', views.inventory_list, name="inventorylist"),
+
+
+    #### for API calls ###
+    path('api-equipments/', views.get_equipments, name='api-equipments'),
+    path('api-inventory-trans/', views.get_inv_transactions, name='api-transactions')
    
 ]

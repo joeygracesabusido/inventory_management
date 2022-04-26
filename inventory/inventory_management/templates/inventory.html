@@ -51,7 +51,7 @@
             
             
             <label for="Transaction Type" >Transaction Type</label>
-                <select id="transType" name="transType"
+                <select id="transType" name="transType" onchange="alert('hi')"
                >
                     <option value="">---</option>
                     <option value="1">In</option>
@@ -154,7 +154,7 @@
                             id="inventory_id_in${x}"
                             class="inventory_id_in"
                             size='7'
-                            onchange=myFunction()
+                            onchange=get_transactions(${x})
                         >
                         </input
                           
@@ -300,7 +300,48 @@
         }
         
     </script> -->
-
+    <script>
+        function get_transactions(i){
+            let x = document.getElementById('inventory_id_in'+i).value
+            if (x.length == 8){
+                setTimeout(() =>
+                $.ajax( 
+                { 
+                    type:"GET", 
+                    url: "{% url 'api-transactions' %}",
+                    data: {
+                        val: x
+                    },
+                
+                error: function(e){
+                    console.log(e)
+                },
+                success: function( response ) 
+                {
+                    data = response.data
+                    console.log(data)
+                    document.getElementById('brand' + i).value = data.brand
+                    document.getElementById('itemdescriptions' + i).value = data.item_description
+                    document.getElementById('myCategory' + i).value = data.category_inv
+                    document.getElementById('price' + i).value = data.inventory_price
+    
+                    // data.forEach(el => {
+                    //     console.log(el)
+                    //     $("#lesson-taken-table tbody").prepend(
+                    //         `
+                    //         <tr>
+                    //             <td style="width: 200px;">${el['lesson']['name']}</td>
+                    //             <td style="width: 170px;">${el['lesson']['subject']['name']}</td>
+                    //             <td style="width: 180px;">${el['lesson']['instructor']['name']}</td>
+                    //         </tr>
+                    //         `
+                    //         )
+                    // });
+                 
+                } }), 1000);
+            }
+        }
+    </script>
     <script>
          function myFunction2(i) {
                 let q = document.getElementById('quantity' + i).value;

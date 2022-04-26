@@ -8,9 +8,14 @@ from django.contrib import messages, auth
 
 from .models import equipment, inventory_db, inventory_transaction
 
-from django.shortcuts import HttpResponse
+# from django.shortcuts import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from django.db.models import Sum
+
+from .serializers import (
+    EquipmentSerializer, InventoryTransactions
+)
 
 # def is_ajax(request):
 #     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
@@ -23,7 +28,29 @@ from django.db.models import Sum
 #         message = "Not ajax"
 #     return HttpResponse(message)
 
+def is_ajax(request):
+    return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+def get_equipments(request):
+    if is_ajax(request=request):
+        equipments = equipment.objects.all()
+        print(equipments)
+        return JsonResponse({
+            'data': [EquipmentSerializer(e).data for e in equipments],
+            })
+    return redirect('/')
+
+def get_inv_transactions(request):
+    val = request.GET['val']
+    if is_ajax(request=request):
+        # inv = inventory_transaction.objects.all()
+        inv = inventory_transaction.objects.get(inventory_id=val)
+        
+        print(inv)
+        return JsonResponse({
+            'data': InventoryTransactions(inv).data
+            })
+    return redirect('/')
 
 def loginPage(request):
     #return render(request, 'accounts/login.html')
