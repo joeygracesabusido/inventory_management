@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 
@@ -132,9 +133,16 @@
                    
                 {% endfor %}
 
-                {% comment %} {% for i inventoryList2%}
-                <td>{{i.inventory_amount__sum}}</td>
-                {% endfor %}  {% endcomment %}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{total|floatformat:2|intcomma}}</td>
+                </tr>
+              
             </tbody> 
         </table>
     </div>
@@ -199,7 +207,7 @@
         });
    </script> -->
    <script>
-       {% comment %} $(document).ready(function()
+       $(document).ready(function()
         {
             var emp_amount;
             var total = 0
@@ -213,7 +221,7 @@
                 // console.log(total)
 
             });
-        }); {% endcomment %}
+        });
    </script>
 
 

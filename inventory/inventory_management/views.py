@@ -299,18 +299,12 @@ def inventory_list(request):
             
             searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
             
-            searchResult = inventory_transaction.objects.filter(trans_date__lte =date_to)\
-                            .filter(trans_date__gte =date_from)\
-                                .aggregate(Sum('inventory_amount'))
-            print(searchResult['inventory_amount__sum'])
-            # if searchResult['inventory_amount__sum'] =='':
-            #     pass
-            # else:
-            #     return render (request,"inventoryList.html",{"inventory_list2": searchResult['inventory_amount__sum']}
-            #          )
+            total = searchResult2.aggregate(Sum('inventory_amount'))
            
-            return render (request,"inventoryList.html",{"inventory_list": searchResult2}
-                     )
+            return render (request,"inventoryList.html",{
+                "inventory_list": searchResult2, 
+                'total': total['inventory_amount__sum']
+                })
 
             # searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).\
             #                 aggregate(Sum('inventory_amount'))
@@ -325,15 +319,20 @@ def inventory_list(request):
             searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to) \
                 .filter(trans_date__gte =date_from).filter(equipment=equipment_search)
             
-            
+            total = searchResult2.aggregate(Sum('inventory_amount'))
            
-            return render (request,"inventoryList.html",{"inventory_list": searchResult2}
-                           )
+            return render (request,"inventoryList.html",{
+                "inventory_list": searchResult2, 
+                'total': total['inventory_amount__sum']
+                })
             
             
         elif equipment_search == '' and inventory_search == '':
+            total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
+            print(total)
             context = {
-            'inventory_list': inventory_transaction.objects.all()
+            'inventory_list': inventory_transaction.objects.all(),
+            'total': total['inventory_amount__sum']
             }
 
             
@@ -343,8 +342,10 @@ def inventory_list(request):
 
 
     else:
+        total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
         context = {
-            'inventory_list': inventory_transaction.objects.all()
+        'inventory_list': inventory_transaction.objects.all(),
+        'total': total['inventory_amount__sum']
         }
 
         
