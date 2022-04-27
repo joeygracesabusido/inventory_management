@@ -47,8 +47,9 @@
         name='date_to'
         
         />   
+        
        
-
+        
         <!-- <select name="Equipment" id="Equipment">
 
             {% for result in sequenceList2 %}
@@ -62,14 +63,22 @@
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
     </div>
     <div class="container mt-3">
-        <!-- <input class="text-white bg-primary" type="text"
-        name='total_amount'
-        style="height:100px;width: 190px"
         
-       
-        />  -->
+            {% comment %} <input class="text-white bg-primary" type="text"
+            name='total_amount'
+            style="height:100px;width: 190px"
+            {% for i in inventoryList2 %}
+                {{i.inventory_amount}}
+            
+            {% endfor %}
+            />   {% endcomment %}
         
-      
+      <p>
+
+        {% comment %} {% for i in inventoryList2%}
+        {{i.inventory_amount}}
+        {% endfor %} {% endcomment %}
+      </p>
 
     </div>
     <div class="container mt-3">
@@ -122,17 +131,10 @@
                        
                    
                 {% endfor %}
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td id="Total_amount">
 
-                    </td>
-                </tr>
+                {% comment %} {% for i inventoryList2%}
+                <td>{{i.inventory_amount__sum}}</td>
+                {% endfor %}  {% endcomment %}
             </tbody> 
         </table>
     </div>
@@ -174,7 +176,7 @@
                 });
         });
 
-     </script> -->
+     </scrip> -->
 
 
    <!-- <script>
@@ -197,7 +199,7 @@
         });
    </script> -->
    <script>
-       $(document).ready(function()
+       {% comment %} $(document).ready(function()
         {
             var emp_amount;
             var total = 0
@@ -211,7 +213,7 @@
                 // console.log(total)
 
             });
-        });
+        }); {% endcomment %}
    </script>
 
 

@@ -1,3 +1,4 @@
+from datetime import datetime,date
 from django.shortcuts import render,redirect
 
 # Create your views here.
@@ -257,15 +258,15 @@ def inventory_list(request):
         
             return render (request,"inventoryList.html", {"inventory_list": searchResult})
         
-        elif equipment_search != '' and inventory_search == '':
+        # elif equipment_search != '' and inventory_search == '':
 
-            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                                unit_measurement,inventory_price,inventory_amount,\
-                                                    equipment\
-                                                from inventory_transaction where \
-                                                equipment like "%'+ equipment_search +'%"' )
+        #     searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+        #                                         unit_measurement,inventory_price,inventory_amount,\
+        #                                             equipment\
+        #                                         from inventory_transaction where \
+        #                                         equipment like "%'+ equipment_search +'%"' )
         
-            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+        #     return render (request,"inventoryList.html", {"inventory_list": searchResult})
 
         
         elif equipment_search == '' and inventory_search != '':
@@ -289,19 +290,47 @@ def inventory_list(request):
             # #     print(z)
 
 
-            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                                unit_measurement,inventory_price,inventory_amount,\
-                                                    equipment\
-                                                from inventory_transaction where \
-                                                    trans_date BETWEEN \
-                                                     "'+ date_from +'"  AND "'+ date_to +'"' )
+            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+            #                                     unit_measurement,inventory_price,inventory_amount,\
+            #                                         equipment\
+            #                                     from inventory_transaction where \
+            #                                         trans_date BETWEEN \
+            #                                          "'+ date_from +'"  AND "'+ date_to +'"' )
+            
+            searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
+            
+            searchResult = inventory_transaction.objects.filter(trans_date__lte =date_to)\
+                            .filter(trans_date__gte =date_from)\
+                                .aggregate(Sum('inventory_amount'))
+            print(searchResult['inventory_amount__sum'])
+            # if searchResult['inventory_amount__sum'] =='':
+            #     pass
+            # else:
+            #     return render (request,"inventoryList.html",{"inventory_list2": searchResult['inventory_amount__sum']}
+            #          )
+           
+            return render (request,"inventoryList.html",{"inventory_list": searchResult2}
+                     )
 
-            # searchResult2 = searchResult.objects.aggregate(Sum('inventory_amount'))
+            # searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).\
+            #                 aggregate(Sum('inventory_amount'))
+                            
+            # searchResult2 = inventory_transaction.objects.filter(trans_date__gte=datetime.date(date_to))
         
-            return render (request,"inventoryList.html", {"inventory_list": searchResult}
-                                        )
-
-
+            # return render (request,"inventoryList.html",{"inventory_list": searchResult2},
+                                        
+      
+            
+        elif equipment_search !='' and inventory_search == '' and date_from !='' and date_to !='' :
+            searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to) \
+                .filter(trans_date__gte =date_from).filter(equipment=equipment_search)
+            
+            
+           
+            return render (request,"inventoryList.html",{"inventory_list": searchResult2}
+                           )
+            
+            
         elif equipment_search == '' and inventory_search == '':
             context = {
             'inventory_list': inventory_transaction.objects.all()

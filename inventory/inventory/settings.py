@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'inventory_management.apps.InventoryManagementConfig',
     'django.contrib.humanize',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
