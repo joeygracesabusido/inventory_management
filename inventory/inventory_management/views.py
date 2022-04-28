@@ -387,9 +387,10 @@ def export_excel(request):
     
     
    
-        # searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+    searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+
         
-    searchResult = inventory_transaction.objects.all()
+    # searchResult = inventory_transaction.objects.all()
     
     
     for i in searchResult:
@@ -398,5 +399,5 @@ def export_excel(request):
                         i.quantity, i.unit_measurement,
                         i.inventory_price, i.inventory_amount, i.equipment])
     
-        
+    # return HttpResponse('<h1>Page was found</h1>')  
     return response
