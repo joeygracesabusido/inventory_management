@@ -13,6 +13,9 @@ urlpatterns = [
     path('test-html/', views.test, name="test-html"),
     path('insert-inventory-in/', views.save_inventory_in, name="insert-inventory-in"),
     path('inventorylist/', views.inventory_list, name="inventorylist"),
+    
+    #### for exporting excel####
+    path('export-excel/', views.export_excel, name="export-excel"),
 
 
     #### for API calls ###

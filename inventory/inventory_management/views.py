@@ -18,6 +18,8 @@ from .serializers import (
     EquipmentSerializer, InventoryTransactions
 )
 
+import csv
+
 # def is_ajax(request):
 #     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
@@ -249,35 +251,48 @@ def inventory_list(request):
         if equipment_search != '' and  inventory_search != '':
             
 
-            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                                unit_measurement,inventory_price,inventory_amount,\
-                                                    equipment\
-                                                from inventory_transaction where \
-                                                equipment like "%'+ equipment_search +'%" and \
-                                                inventory_id like "%'+ inventory_search +'%"' )
-        
-            return render (request,"inventoryList.html", {"inventory_list": searchResult})
-        
-        # elif equipment_search != '' and inventory_search == '':
+            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+            #                                     unit_measurement,inventory_price,inventory_amount,\
+            #                                         equipment\
+            #                                     from inventory_transaction where \
+            #                                     equipment like "%'+ equipment_search +'%" and \
+            #                                     inventory_id like "%'+ inventory_search +'%"' )
 
-        #     searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-        #                                         unit_measurement,inventory_price,inventory_amount,\
-        #                                             equipment\
-        #                                         from inventory_transaction where \
-        #                                         equipment like "%'+ equipment_search +'%"' )
-        
-        #     return render (request,"inventoryList.html", {"inventory_list": searchResult})
+            
+            
+            
+            
+            searchResult = inventory_transaction.objects.filter(equipment = equipment_search).filter(inventory_id = inventory_search)
+            total = searchResult.aggregate(Sum('inventory_amount'))
+            
+            
+            return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                          'total': total['inventory_amount__sum'] })
+            
+        elif equipment_search != '' and inventory_search == '' and date_from =='' and date_to =='':
+            searchResult = inventory_transaction.objects.filter(equipment =equipment_search)
+            
 
+            total = searchResult.aggregate(Sum('inventory_amount'))
+            return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                          'total': total['inventory_amount__sum'] })
+
+            
         
         elif equipment_search == '' and inventory_search != '':
     
-            searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-                                                unit_measurement,inventory_price,inventory_amount,\
-                                                    equipment\
-                                                from inventory_transaction where \
-                                                inventory_id like "%'+ inventory_search +'%"' )
-        
-            return render (request,"inventoryList.html", {"inventory_list": searchResult})
+            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+            #                                     unit_measurement,inventory_price,inventory_amount,\
+            #                                         equipment\
+            #                                     from inventory_transaction where \
+            #                                     inventory_id like "%'+ inventory_search +'%"' )
+            
+            searchResult = inventory_transaction.objects.filter(inventory_id =inventory_search)
+            
+
+            total = searchResult.aggregate(Sum('inventory_amount'))
+            return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                          'total': total['inventory_amount__sum'] })
 
 
         elif equipment_search =='' and inventory_search == '' and date_from !='' and date_to !='' :
@@ -351,3 +366,37 @@ def inventory_list(request):
         
         return render(request,'inventoryList.html',context)
 
+def export_excel(request):
+    """
+    this function  is for exporting excel
+    """
+    
+    date_from = request.POST.get('date_from')
+    date_to = request.POST.get('date_to')
+    equipment_search = request.POST.get('equipment_id')
+    inventory_search = request.POST.get('Inventory_id')
+    
+    
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inventory.csv"'
+    
+    writer = csv.writer(response)
+    writer.writerow(['Date', 'ID', 'Inventory ID', 'Quantity','Unit','Price',
+                        'Equipment'])
+    
+    
+    
+   
+        # searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+        
+    searchResult = inventory_transaction.objects.all()
+    
+    
+    for i in searchResult:
+        
+        writer.writerow([i.trans_date, i.inventory_id,
+                        i.quantity, i.unit_measurement,
+                        i.inventory_price, i.inventory_amount, i.equipment])
+    
+        
+    return response

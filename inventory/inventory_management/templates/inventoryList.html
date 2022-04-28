@@ -48,6 +48,8 @@
         name='date_to'
         
         />   
+
+       
         
        
         
@@ -62,6 +64,12 @@
 
 
         <button type="submit" class="btn btn-secondary"><i class="fas fa-database"></i>Search</button>
+
+
+        {% comment %} <button href="{% url 'export-excel' %}" type="button" class="btn btn-danger">
+            <i class="fas fa-database"></i>Export Excel</button>  {% endcomment %}
+
+        <a href="{% url 'export-excel' %}">Export Excel</a>
     </div>
     <div class="container mt-3">
         
@@ -106,8 +114,8 @@
                         <td>{{list.inventory_id}}</td>
                         <td>{{list.quantity}}</td>
                         <td>{{list.unit_measurement}}</td>
-                        <td>{{list.inventory_price}}</td>
-                        <td id="inventoryAmount">{{list.inventory_amount}}</td>
+                        <td>{{list.inventory_price|floatformat:2|intcomma}}</td>
+                        <td id="inventoryAmount">{{list.inventory_amount|floatformat:2|intcomma}}</td>
                         <td>{{list.equipment}}</td>
                         
                         <!-- <td>
