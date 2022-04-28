@@ -3,8 +3,8 @@
 {% block content %}
 
 
-    <form action="{% url 'insert-inventory-in' %}" method="POST">
-        {% csrf_token %}
+    <form action="{% url 'insert-inventory-in' %}" method="GET">
+
         <div  class="container mt-2"><br>
             <label for="Inventory Date" >Date</label>
     
@@ -21,6 +21,7 @@
                 name="inventory_date"
                 id="inventory_date"
                 size="30"
+                value="{{request.GET.get.inventory_date}}"
                 >
                 </input>
 
@@ -31,6 +32,7 @@
                 name="sales_invoice"
                 id="sales_invoice"
                 size="15"
+                value="{{request.get.sales_invoice}}"
                 >
                 </input>
                 

@@ -240,124 +240,111 @@ def inventory_list(request):
     """
 
    
-    if request.method=="POST":
+    # if request.method=="POST":
         
-        equipment_search = request.POST.get('equipment_id')
-        inventory_search = request.POST.get('Inventory_id')
-        date_from = request.POST.get('date_from')
-        date_to = request.POST.get('date_to')
-        
-
-        if equipment_search != '' and  inventory_search != '':
-            
-
-            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-            #                                     unit_measurement,inventory_price,inventory_amount,\
-            #                                         equipment\
-            #                                     from inventory_transaction where \
-            #                                     equipment like "%'+ equipment_search +'%" and \
-            #                                     inventory_id like "%'+ inventory_search +'%"' )
-
-            
-            
-            
-            
-            searchResult = inventory_transaction.objects.filter(equipment = equipment_search).filter(inventory_id = inventory_search)
-            total = searchResult.aggregate(Sum('inventory_amount'))
-            
-            
-            return render (request,"inventoryList.html", {"inventory_list": searchResult,
-                          'total': total['inventory_amount__sum'] })
-            
-        elif equipment_search != '' and inventory_search == '' and date_from =='' and date_to =='':
-            searchResult = inventory_transaction.objects.filter(equipment =equipment_search)
-            
-
-            total = searchResult.aggregate(Sum('inventory_amount'))
-            return render (request,"inventoryList.html", {"inventory_list": searchResult,
-                          'total': total['inventory_amount__sum'] })
-
-            
-        
-        elif equipment_search == '' and inventory_search != '':
+    equipment_search = request.GET.get('equipment_id')
+    inventory_search = request.GET.get('Inventory_id')
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
     
-            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-            #                                     unit_measurement,inventory_price,inventory_amount,\
-            #                                         equipment\
-            #                                     from inventory_transaction where \
-            #                                     inventory_id like "%'+ inventory_search +'%"' )
-            
-            searchResult = inventory_transaction.objects.filter(inventory_id =inventory_search)
-            
 
-            total = searchResult.aggregate(Sum('inventory_amount'))
-            return render (request,"inventoryList.html", {"inventory_list": searchResult,
-                          'total': total['inventory_amount__sum'] })
-
-
-        elif equipment_search =='' and inventory_search == '' and date_from !='' and date_to !='' :
-
-            # searchResult = inventory_db.objects.all()
-            # searchResult2 = inventory_db.objects.filter(trans_date__gte =date_to )
-            # # searchResult =  inventory_transaction.objects.all()
-            # # for i in searchResult:
-            # #     z = i.transactions_inventory.trans_date
-            # #     print(z)
-
-
-            # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
-            #                                     unit_measurement,inventory_price,inventory_amount,\
-            #                                         equipment\
-            #                                     from inventory_transaction where \
-            #                                         trans_date BETWEEN \
-            #                                          "'+ date_from +'"  AND "'+ date_to +'"' )
-            
-            searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
-            
-            total = searchResult2.aggregate(Sum('inventory_amount'))
-           
-            return render (request,"inventoryList.html",{
-                "inventory_list": searchResult2, 
-                'total': total['inventory_amount__sum']
-                })
-
-            # searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).\
-            #                 aggregate(Sum('inventory_amount'))
-                            
-            # searchResult2 = inventory_transaction.objects.filter(trans_date__gte=datetime.date(date_to))
+    if equipment_search != '' and  inventory_search != '':
         
-            # return render (request,"inventoryList.html",{"inventory_list": searchResult2},
-                                        
-      
-            
-        elif equipment_search !='' and inventory_search == '' and date_from !='' and date_to !='' :
-            searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to) \
-                .filter(trans_date__gte =date_from).filter(equipment=equipment_search)
-            
-            total = searchResult2.aggregate(Sum('inventory_amount'))
-           
-            return render (request,"inventoryList.html",{
-                "inventory_list": searchResult2, 
-                'total': total['inventory_amount__sum']
-                })
-            
-            
-        elif equipment_search == '' and inventory_search == '':
-            total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
-            print(total)
-            context = {
-            'inventory_list': inventory_transaction.objects.all(),
+
+        # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+        #                                     unit_measurement,inventory_price,inventory_amount,\
+        #                                         equipment\
+        #                                     from inventory_transaction where \
+        #                                     equipment like "%'+ equipment_search +'%" and \
+        #                                     inventory_id like "%'+ inventory_search +'%"' )
+
+        
+        
+        
+        
+        searchResult = inventory_transaction.objects.filter(equipment = equipment_search).filter(inventory_id = inventory_search)
+        total = searchResult.aggregate(Sum('inventory_amount'))
+        
+        
+        return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                        'total': total['inventory_amount__sum'] })
+        
+    elif equipment_search != '' and inventory_search == '' and date_from =='' and date_to =='':
+        searchResult = inventory_transaction.objects.filter(equipment =equipment_search)
+        
+
+        total = searchResult.aggregate(Sum('inventory_amount'))
+        return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                        'total': total['inventory_amount__sum'] })
+
+        
+    
+    elif equipment_search == '' and inventory_search != '':
+
+        # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+        #                                     unit_measurement,inventory_price,inventory_amount,\
+        #                                         equipment\
+        #                                     from inventory_transaction where \
+        #                                     inventory_id like "%'+ inventory_search +'%"' )
+        
+        searchResult = inventory_transaction.objects.filter(inventory_id =inventory_search)
+        
+
+        total = searchResult.aggregate(Sum('inventory_amount'))
+        return render (request,"inventoryList.html", {"inventory_list": searchResult,
+                        'total': total['inventory_amount__sum'] })
+
+
+    elif equipment_search =='' and inventory_search == '' and date_from !='' and date_to !='' :
+
+        # searchResult = inventory_db.objects.all()
+        # searchResult2 = inventory_db.objects.filter(trans_date__gte =date_to )
+        # # searchResult =  inventory_transaction.objects.all()
+        # # for i in searchResult:
+        # #     z = i.transactions_inventory.trans_date
+        # #     print(z)
+
+
+        # searchResult = inventory_transaction.objects.raw('SELECT id, inventory_id, quantity,\
+        #                                     unit_measurement,inventory_price,inventory_amount,\
+        #                                         equipment\
+        #                                     from inventory_transaction where \
+        #                                         trans_date BETWEEN \
+        #                                          "'+ date_from +'"  AND "'+ date_to +'"' )
+        
+        searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
+        
+        total = searchResult2.aggregate(Sum('inventory_amount'))
+        
+        return render (request,"inventoryList.html",{
+            "inventory_list": searchResult2, 
             'total': total['inventory_amount__sum']
-            }
+            })
 
-            
-            return render(request,'inventoryList.html',context)
-       
+        # searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to).\
+        #                 aggregate(Sum('inventory_amount'))
+                        
+        # searchResult2 = inventory_transaction.objects.filter(trans_date__gte=datetime.date(date_to))
+    
+        # return render (request,"inventoryList.html",{"inventory_list": searchResult2},
+                                    
+    
         
-
-
-    else:
+    elif equipment_search !='' and inventory_search == '' and date_from !='' and date_to !='' :
+        searchResult2 = inventory_transaction.objects.filter(trans_date__lte =date_to) \
+            .filter(trans_date__gte =date_from).filter(equipment=equipment_search)
+        
+        total = searchResult2.aggregate(Sum('inventory_amount'))
+        
+        return render (request,"inventoryList.html",{
+            "inventory_list": searchResult2, 
+            'total': total['inventory_amount__sum']
+            })
+        
+        
+    elif equipment_search == '' and inventory_search == '':
         total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
+        print(total)
         context = {
         'inventory_list': inventory_transaction.objects.all(),
         'total': total['inventory_amount__sum']
@@ -365,6 +352,19 @@ def inventory_list(request):
 
         
         return render(request,'inventoryList.html',context)
+       
+        
+
+
+    # else:
+    #     total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
+    #     context = {
+    #     'inventory_list': inventory_transaction.objects.all(),
+    #     'total': total['inventory_amount__sum']
+    #     }
+
+        
+    #     return render(request,'inventoryList.html',context)
 
 def export_excel(request):
     """
