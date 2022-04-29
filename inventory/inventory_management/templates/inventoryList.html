@@ -74,7 +74,7 @@
         {% comment %} <button href="{% url 'export-excel' %}" type="button" class="btn btn-danger">
             <i class="fas fa-database"></i>Export Excel</button>  {% endcomment %}
 
-        <a href="{% url 'export-excel' %}">Export Excel</a>
+        <a href="{% url 'export-excel' %}?Inventory_id={{request.GET.Inventory_id}}&equipment_id={{request.GET.equipment_id}}&date_from={{request.GET.date_from}}&date_to={{request.GET.date_to}}">Export Excel</a>
     </div>
     <div class="container mt-3">
         

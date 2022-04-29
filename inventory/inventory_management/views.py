@@ -265,7 +265,6 @@ def inventory_list(request):
         searchResult = inventory_transaction.objects.filter(equipment = equipment_search).filter(inventory_id = inventory_search)
         total = searchResult.aggregate(Sum('inventory_amount'))
         
-        
         return render (request,"inventoryList.html", {"inventory_list": searchResult,
                         'total': total['inventory_amount__sum'] })
         
@@ -375,7 +374,7 @@ def export_excel(request):
     """
     this function  is for exporting excel
     """
-    
+    print(request.GET)
     equipment_search = request.GET.get('equipment_id')
     inventory_search = request.GET.get('Inventory_id')
     date_from = request.GET.get('date_from')
@@ -391,18 +390,23 @@ def export_excel(request):
     
     
     
-    print(equipment_search)
-    # searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+    print(date_from)
+    if equipment_search:
+        searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+        for i in searchResult:
+            
+            writer.writerow([i.trans_date, i.inventory_id,
+                            i.quantity, i.unit_measurement,
+                            i.inventory_price, i.inventory_amount, i.equipment])
+        
+        
 
+    if date_from and date_to:
+        searchResult = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
+        for i in searchResult:
+            writer.writerow([i.trans_date, i.inventory_id,
+                            i.quantity, i.unit_measurement,
+                            i.inventory_price, i.inventory_amount, i.equipment])
         
-    # # searchResult = inventory_transaction.objects.all()
-    
-    
-    # for i in searchResult:
         
-    #     writer.writerow([i.trans_date, i.inventory_id,
-    #                     i.quantity, i.unit_measurement,
-    #                     i.inventory_price, i.inventory_amount, i.equipment])
-    
-    return HttpResponse('<h1>Page was found</h1>')  
-    # return response
+    return response
