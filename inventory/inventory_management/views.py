@@ -391,8 +391,10 @@ def export_excel(request):
     
     
     print(date_from)
-    if equipment_search:
-        searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+    if equipment_search and date_from !='' and date_to!='':
+        # searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+        searchResult = inventory_transaction.objects.filter(trans_date__lte =date_to) \
+        .filter(trans_date__gte =date_from).filter(equipment=equipment_search) 
         for i in searchResult:
             
             writer.writerow([i.trans_date, i.inventory_id,
@@ -401,12 +403,28 @@ def export_excel(request):
         
         
 
-    if date_from and date_to:
+    if date_from and date_to and equipment_search =='' :
         searchResult = inventory_transaction.objects.filter(trans_date__lte =date_to).filter(trans_date__gte =date_from)
         for i in searchResult:
             writer.writerow([i.trans_date, i.inventory_id,
                             i.quantity, i.unit_measurement,
                             i.inventory_price, i.inventory_amount, i.equipment])
+            
+    
+    if equipment_search  and inventory_search == '' and date_from =='' and date_to =='' :
         
+        searchResult = inventory_transaction.objects.filter(equipment=equipment_search) 
+        for i in searchResult:
+            writer.writerow([i.trans_date, i.inventory_id,
+                        i.quantity, i.unit_measurement,
+                        i.inventory_price, i.inventory_amount, i.equipment])   
+            
+    if inventory_search and equipment_search == '' and date_from =='' and date_to =='':
+        searchResult = inventory_transaction.objects.filter(inventory_id =inventory_search) 
+        for i in searchResult:
+            writer.writerow([i.trans_date, i.inventory_id,
+                        i.quantity, i.unit_measurement,
+                        i.inventory_price, i.inventory_amount, i.equipment]) 
+         
         
     return response
