@@ -274,6 +274,10 @@ def inventory_list(request):
         
 
         total = searchResult.aggregate(Sum('inventory_amount'))
+        
+        
+        
+        
         return render (request,"inventoryList.html", {"inventory_list": searchResult,
                         'total': total['inventory_amount__sum'] })
 
@@ -344,6 +348,7 @@ def inventory_list(request):
         
     elif equipment_search == '' and inventory_search == '':
         total = inventory_transaction.objects.aggregate(Sum('inventory_amount'))
+       
         print(total)
         context = {
         'inventory_list': inventory_transaction.objects.all(),
@@ -371,10 +376,10 @@ def export_excel(request):
     this function  is for exporting excel
     """
     
-    date_from = request.POST.get('date_from')
-    date_to = request.POST.get('date_to')
-    equipment_search = request.POST.get('equipment_id')
-    inventory_search = request.POST.get('Inventory_id')
+    equipment_search = request.GET.get('equipment_id')
+    inventory_search = request.GET.get('Inventory_id')
+    date_from = request.GET.get('date_from')
+    date_to = request.GET.get('date_to')
     
     
     response = HttpResponse(content_type='text/csv')
@@ -386,18 +391,18 @@ def export_excel(request):
     
     
     
-   
-    searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
+    print(equipment_search)
+    # searchResult = inventory_transaction.objects.filter(equipment = equipment_search)
 
         
-    # searchResult = inventory_transaction.objects.all()
+    # # searchResult = inventory_transaction.objects.all()
     
     
-    for i in searchResult:
+    # for i in searchResult:
         
-        writer.writerow([i.trans_date, i.inventory_id,
-                        i.quantity, i.unit_measurement,
-                        i.inventory_price, i.inventory_amount, i.equipment])
+    #     writer.writerow([i.trans_date, i.inventory_id,
+    #                     i.quantity, i.unit_measurement,
+    #                     i.inventory_price, i.inventory_amount, i.equipment])
     
-    # return HttpResponse('<h1>Page was found</h1>')  
-    return response
+    return HttpResponse('<h1>Page was found</h1>')  
+    # return response
