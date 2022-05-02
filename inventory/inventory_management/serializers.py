@@ -35,9 +35,11 @@ class InventoryTransactions(serializers.ModelSerializer):
             'transactions_inventory',
             'brand',
             'category_inv',
+            'quantity',
             'item_description',
             'unit_measurement',
-            'inventory_price'
+            'inventory_price',
+            'equipment'
         )
     def get_transactions_inventory(self, obj):
         return InventorySerializer(obj.transactions_inventory).data
