@@ -31,6 +31,7 @@ class InventoryTransactions(serializers.ModelSerializer):
         read_only_fields = ('id',)
         fields = (
             'id',
+            'inventory_id',
             'transactions_inventory',
             'brand',
             'category_inv',

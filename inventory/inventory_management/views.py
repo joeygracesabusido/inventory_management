@@ -34,6 +34,16 @@ import csv
 def is_ajax(request):
     return request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
 
+def get_inv_by_category(request):
+    val = request.GET['val']
+    if is_ajax(request=request):
+        # inv = inventory_transaction.objects.all()
+        inv = inventory_transaction.objects.filter(category_inv=val)
+        return JsonResponse({
+            'data': [InventoryTransactions(i).data for i in inv]
+            })
+    return redirect('/')
+
 def get_equipments(request):
     if is_ajax(request=request):
         equipments = equipment.objects.all()
@@ -54,6 +64,7 @@ def get_inv_transactions(request):
             'data': InventoryTransactions(inv).data
             })
     return redirect('/')
+
 
 def loginPage(request):
     #return render(request, 'accounts/login.html')

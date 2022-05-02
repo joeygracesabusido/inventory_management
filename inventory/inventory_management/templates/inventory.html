@@ -27,7 +27,7 @@
                         </button>
                     </div>
                     <div class="modal-body"  >
-                        <select id="myCategory_inv" name="myCategory_inv">
+                        <select id="myCategory_inv" name="myCategory_inv" onchange="get_by_category()">
                             <option value="">---</option>
                             <option value="1">Tires</option>
                             <option value="2">Oil & Lubricants</option>
@@ -55,46 +55,7 @@
                                     
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {% for list in inventory_list_modal%}
-                        
-                                        <tr>
-                                            <!-- <td>{{list.transactions_inventory.trans_date}}</td> -->
-                                            <td>{{list.id}}</td>
-                                            <td>{{list.inventory_id}}</td>
-                                            <td>{{list.brand}}</td>
-                                            <td>{{list.item_description}}</td>
-                                            <td>{{list.quantity}}</td>
-                                            <td>{{list.equipment}}</td>
-                                            
-                                        
-                                            
-                                            <td></td>
-                                        
-                                            
-                                            <!-- <td>
-                                                <a href=""
-                                                <button type="button" class="btn btn-primary">
-                                                <i class="fas fa-database"></i> Edit</button></a>
-                                            </td> -->
-                                            <td>
-                                                
-                                                <!-- <a href="{% url 'equipmentDelete' list.id%}"method="POST">
-                                                    <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
-                                                </a> -->
-                                            </td>
-                                            
-                    
-                                            
-                                        </tr>
-                                        {% comment %} {% empty %}
-                                            <p>
-                                                No Record found click add new Button
-                                            </p> {% endcomment %}
-                                        
-                                    
-                                    {% endfor %}
-                    
+                                <tbody id="category">
                                     
                                 
                                 </tbody> 
@@ -417,6 +378,55 @@
         }
         
     </script> -->
+    <script>
+        function get_by_category(){
+            let x = document.getElementById('myCategory_inv').value
+                $.ajax( 
+                { 
+                    type:"GET", 
+                    url: "{% url 'api-by-category' %}",
+                    data: {
+                        val: x
+                    },
+                
+                error: function(e){
+                    console.log(e)
+                },
+                success: function( response ) 
+                {
+                    data = response.data
+                    console.log(data)
+                    document.getElementById('category').innerHTML = ""
+                    data.forEach(c => {
+                        console.log(c)
+                        
+                        document.getElementById('category').innerHTML += `
+                        
+                            <tr id="${c['id']}">
+                                <td style="width: 200px;">${c['id']}</td>
+                                <td style="width: 200px;">${c['inventory_id']}</td>
+                                <td style="width: 170px;">${c['brand']}</td>
+                                <td style="width: 180px;">${c['item_description']}</td>
+                            </tr>
+                            
+                            
+                        `
+                        $("#category tbody").append(
+                            // `
+                            // <tr id="${c['id']}">
+                            //     <td style="width: 200px;">${c['id']}</td>
+                            //     <td style="width: 170px;">${c['brand']}</td>
+                            //     <td style="width: 180px;">${c['item_description']}</td>
+                            // </tr>
+                            // `
+                            // )
+
+                        )
+                    });
+                 
+                } })
+        }
+    </script>
     <script>
         function get_transactions(i){
             let x = document.getElementById('inventory_id_in'+i).value

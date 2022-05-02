@@ -21,6 +21,7 @@ urlpatterns = [
     #### for API calls ###
     path('api-equipments/', views.get_equipments, name='api-equipments'),
     path('api-inventory-trans/', views.get_inv_transactions, name='api-transactions'),
+    path('api-inventory-category/', views.get_inv_by_category, name='api-by-category'),
     
     ## this is for inventory modal search ##
     path('inventorylist-modalList/', views.search_modal_inventory, name='inventorylist-modalList')
