@@ -2,7 +2,122 @@
 
 {% block content %}
 
+<style>
+    .modal-lg {
+        max-width: 75% !important;
+    }
+</style>
 
+<!-- this is for searching inventory list-->
+        <forms class='form'
+            <div  class="container mt-3" >
+                <button class="btn btn-success btn-lg " data-toggle="modal" data-target="#modalForm">
+                    Serach for Inventory
+                </button>
+            </div><br>
+
+            <div >
+                <div class="modal fade" id="modalForm" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg" role="document" >
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLongTitle">Inventory </h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body"  >
+                        <select id="myCategory_inv" name="myCategory_inv">
+                            <option value="">---</option>
+                            <option value="1">Tires</option>
+                            <option value="2">Oil & Lubricants</option>
+                            <option value="3">Mechanical Parts</option>
+                            <option value="4">Office Supplies</option>
+                            <option value="5">Tools Supplies</option>
+                            <option value="6">Others Supplies</option>
+                        
+                        </select>
+                        
+                        <button type="submit" name ="buttonsearch" id = "buttonsearch"class="btn btn-primary">Search</button>
+                        
+                        <div class="container mt-3">
+                            <table class="table table-borderless" id="inventoryList_table">
+                                <thead class="border-bottom font-weight-bold">
+                    
+                                    <tr>    
+                                        
+                                    <td>ID</td>
+                                    <td>Inventory ID</td>
+                                    <td>Brand</td>
+                                    <td>Item Description</td>
+                                    <td>Quantity</td> 
+                                    <td>Equipment</td> 
+                                    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for list in inventory_list_modal%}
+                        
+                                        <tr>
+                                            <!-- <td>{{list.transactions_inventory.trans_date}}</td> -->
+                                            <td>{{list.id}}</td>
+                                            <td>{{list.inventory_id}}</td>
+                                            <td>{{list.brand}}</td>
+                                            <td>{{list.item_description}}</td>
+                                            <td>{{list.quantity}}</td>
+                                            <td>{{list.equipment}}</td>
+                                            
+                                        
+                                            
+                                            <td></td>
+                                        
+                                            
+                                            <!-- <td>
+                                                <a href=""
+                                                <button type="button" class="btn btn-primary">
+                                                <i class="fas fa-database"></i> Edit</button></a>
+                                            </td> -->
+                                            <td>
+                                                
+                                                <!-- <a href="{% url 'equipmentDelete' list.id%}"method="POST">
+                                                    <button type="button" class="btn btn-danger"><i class="fas fa-database"></i> Delete</button>   
+                                                </a> -->
+                                            </td>
+                                            
+                    
+                                            
+                                        </tr>
+                                        {% comment %} {% empty %}
+                                            <p>
+                                                No Record found click add new Button
+                                            </p> {% endcomment %}
+                                        
+                                    
+                                    {% endfor %}
+                    
+                                    
+                                
+                                </tbody> 
+                            </table>
+                        </div>
+            
+                         
+                
+        
+                        </div>
+                        <div class="modal-footer">
+                            {% comment %} <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" name ="buttonSave" id = "buttonSave"class="btn btn-primary">Save</button> {% endcomment %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                     
+            </form>
+
+
+
+    <!-- this is for inventory transaction -->
     <form action="{% url 'insert-inventory-in' %}" method="GET">
 
         <div  class="container mt-2"><br>

@@ -428,3 +428,18 @@ def export_excel(request):
          
         
     return response
+
+
+def search_modal_inventory(request):
+    """
+    This function is for 
+    modal in invetory for searching inventory ID
+    """
+    equipment_search = request.GET.get('myCategory_inv')
+    
+    # searchResult = inventory_transaction.objects.filter(equipment =equipment_search)
+    searchResult = inventory_transaction.objects.all()
+    print(searchResult)
+     
+    return render (request,"inventory.html", {"inventory_list_modal": searchResult
+                    })
